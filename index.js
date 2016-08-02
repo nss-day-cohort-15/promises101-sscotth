@@ -341,3 +341,32 @@ Promise.race([
 // })
 
 // result is now a sequential chain of promises
+
+// Advanced: using new HTML5 `fetch` API
+// `fetch` uses Promises but returns a Response object and doesn't include a simple JSON string
+// `fetch`'s Response is actually "stream" thus a simple `JSON.parse` will not work
+// The "Response object" documentation: https://developer.mozilla.org/en-US/docs/Web/API/Response
+// It has it's own JSON parse method: `json()`
+
+// Example usage:
+// fetch()
+//   .then(function (res) {
+//     return res.json()
+//   })
+
+// composing a fetchJSON function similar to the getJSON function above
+// including error handling is trivial
+
+function fetchJSON (url) {
+  return fetch(url)
+    .then(function (res) {
+      return res.json()
+    })
+}
+
+// Usage:
+
+fetchJSON('http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC')
+  .then(function (data) {
+    console.log('`fetch`ed data:', data)
+  })
